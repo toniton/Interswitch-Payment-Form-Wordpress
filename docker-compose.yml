@@ -1,0 +1,30 @@
+version: "3.5"
+services:
+   mariadb:
+     image: mariadb:latest
+     container_name: mariadb
+     restart: always
+     ports:
+       - "3306"
+     environment:
+       MYSQL_ROOT_PASSWORD: tofunmi18@stlouis
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+   wordpress:
+     image: wordpress:latest
+     container_name: egive
+     depends_on: 
+       - "mariadb"
+     links: 
+       - "mariadb"
+     volumes: 
+       - ./:/var/www/html/wp-content/plugins/interswitch-payment-form
+     restart: always
+     ports:
+       - "8085:80"
+     environment:
+       WORDPRESS_DB_HOST: mariadb:3306
+       WORDPRESS_DB_NAME: wordpress
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
