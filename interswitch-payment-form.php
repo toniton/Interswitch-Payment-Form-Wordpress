@@ -25,6 +25,26 @@ if ( ! defined( 'IPF_DIR_PATH' ) ) {
 if ( ! defined( 'IPF_DIR_URL' ) ) {
     define( 'IPF_DIR_URL', plugin_dir_url( __FILE__ ) );
 }
+  
+if ( ! defined( 'IPF_SANDBOX_URL' ) ) {
+    define( 'IPF_SANDBOX_URL', 'https://sandbox.interswitchng.com/webpay' );
+}
+  
+if ( ! defined( 'IPF_TEST_URL' ) ) {
+    define( 'IPF_TEST_URL', 'https://stageserv.interswitchng.com/test_paydirect' );
+}
+  
+if ( ! defined( 'IPF_LIVE_URL' ) ) {
+    define( 'IPF_LIVE_URL', 'https://webpay.interswitchng.com/paydirect' );
+}
+  
+if ( ! defined( 'IPF_PAY_ENDPOINT' ) ) {
+    define( 'IPF_PAY_ENDPOINT', 'pay' );
+}
+  
+if ( ! defined( 'IPF_STATUS_ENDPOINT' ) ) {
+    define( 'IPF_STATUS_ENDPOINT', 'api/v1/gettransaction.json' );
+}
 
 add_action( 'plugins_loaded', 'interswitch_payment_form_plugins_loaded' );
 

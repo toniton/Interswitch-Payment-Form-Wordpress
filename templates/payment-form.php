@@ -1,15 +1,6 @@
 <?php
   if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
-<?php
-    if(isset($_POST["email"])) {
-        echo $_POST["email"];
-        ?>
-        <p> <?php $_POST["email"] ?> </p>
-<?php
-    }
-?>
-
 <form method="POST" action="">
     <div>
         <label for="email">Email</label>
