@@ -1,15 +1,15 @@
 <?php
-  if ( ! defined( 'ABSPATH' ) ) { exit; }
+    if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
 <form method="POST" action="">
     <div>
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="Email Address"/>
+        <input id="email" name="email" type="email" placeholder="Email Address" required/>
         <br/>
     </div>
     <div>
         <label for="amount">Amount (Currency)</label>
-        <input id="amount" name="amount" type="number" placeholder="0"/>
+        <input id="amount" name="amount" type="number" placeholder="" required/>
         <br/>
     </div>
     <input id="confirm-payment" name="confirm-payment" type="hidden"/>

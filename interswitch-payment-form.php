@@ -45,9 +45,21 @@ if ( ! defined( 'IPF_PAY_ENDPOINT' ) ) {
 if ( ! defined( 'IPF_STATUS_ENDPOINT' ) ) {
     define( 'IPF_STATUS_ENDPOINT', 'api/v1/gettransaction.json' );
 }
+  
+if ( ! defined( 'IPF_TABLE_NAME' ) ) {
+    define( 'IPF_TABLE_NAME', 'online_payment_txn' );
+}
 
 add_action( 'plugins_loaded', 'interswitch_payment_form_plugins_loaded' );
 
+// Initialize database tables
+if ( !class_exists( 'WP_Interswitch_Payment_Database' ) ){
+    require_once ( IPF_DIR_PATH . 'models/class_wp_interswitch_payment_database.php');
+}
+register_activation_hook(__FILE__, array( WP_Interswitch_Payment_Database::init(), 'activate'));
+register_deactivation_hook( __FILE__, array( WP_Interswitch_Payment_Database::init(), 'deactivate' ) );
+
+// On Plugins loaded, bootload startup
 function interswitch_payment_form_plugins_loaded() {
     // Startup the entry point to the plugin
     if ( !class_exists( 'WP_Interswitch_Payment_Form' ) ){

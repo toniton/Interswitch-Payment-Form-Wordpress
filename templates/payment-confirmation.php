@@ -1,22 +1,24 @@
 <?php
-    echo "Post Details:";	print_r($_POST);	echo "</br>";
-	
-	$product_id = 6205;		
+    if ( ! defined( 'ABSPATH' ) ) { exit; }
+    $product_id = $atts['product_id'];		
+    $pay_item_id = $atts['pay_item_id'];
     $txn_ref = "JB"  . intval( "0" . rand(1,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) ); // random(ish) 7 digit int. WEBPAY MAX - 50 characters
-    $mac    = "D3D1D05AFE42AD50818167EAC73C109168A0F108F32645C8B59E897FA930DA44F9230910DAC9E20641823799A107A02068F7BC0F4CC41D2952E249552255710F";
+    $mac    = $atts['mac'];
     $site_redirect_url = $atts['site_redirect_url'];
     $amount = $_POST["amount"] * 100;
     $hashv  = $txn_ref . $product_id . "101" . $amount . $site_redirect_url . $mac;
     $customerName = $_POST["FirstName"]." ".$_POST["LastName"];
     $hash  = hash('sha512',$hashv);       
     $_SESSION["amount"] = $amount;	//Store amount for use in GetTransaction
-    
 ?>
 
 <form method="POST" action="<?php echo $atts['payment_redirect_url'] ?>">
     <!-- REQUIRED HIDDEN FIELDS -->
+    <h3>Confirm Payment</h3>
+    <p>You are about to make a payment of <b><?php echo $amount; ?></b> on this website.</p>
+    <small>By clicking the "Make Payment" button below, you have agreed to pay the above sum to the owner/merchants of this website.</small>
     <input name="product_id" type="hidden" value="<?php echo $product_id; ?>" />
-    <input name="pay_item_id" type="hidden" value="101" />
+    <input name="pay_item_id" type="hidden" value="<?php echo $pay_item_id; ?>" />
     <input name="amount" type="hidden" value="<?php echo $amount; ?>" />
     <input name="currency" type="hidden" value="566" />
     <input name="site_redirect_url" type="hidden" value="<?php echo $site_redirect_url ?>" />
@@ -25,7 +27,7 @@
     <input name="site_name" type="hidden" value=""/>
     <input name="cust_name" type="hidden" value="<?php echo $customerName; ?>" />
     <input name="hash" type="hidden" id="hash" value="<?php echo $hash;  ?>" />
-    </br></br>
+    <br/><br/>
     <a href="<?php echo $atts['site_redirect_url'] ?>">Back</a>
     <input type="submit" value="Make Payment"/>
 </form> 
