@@ -50,11 +50,15 @@
         dbDelta($sql);
       }
 
-      public function get_transactions($orderby = 'created_at', $order = 'DESC', $offset = 0, $limit = 30) {
+      public function get_transaction($txn_ref) {
         global $wpdb;
-        // $wpdb->show_errors();
-        return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$this->$table_name." ORDER BY $orderby $order LIMIT $offset, $limit", ARRAY_A));
-        // $wpdb->print_error();
+        return $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$this->$table_name." WHERE txn_ref = '".$txn_ref."' LIMIT 1", ARRAY_A));
+      }
+
+      public function get_transactions($query, $orderby = 'created_at', $order = 'DESC', $offset = 0, $limit = 30) {
+        global $wpdb;
+        $query = "'%".$query."%'";
+        return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$this->$table_name." WHERE txn_ref LIKE ".$query." OR email LIKE ".$query." ORDER BY $orderby $order LIMIT $offset, $limit", ARRAY_A));
       }
 
       public function count() {

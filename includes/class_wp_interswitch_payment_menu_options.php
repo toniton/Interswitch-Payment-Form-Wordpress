@@ -31,7 +31,14 @@
           50
         );
         
-    
+        add_submenu_page(
+          null,
+          __( 'Transactions', 'ipf-payment' ),
+          __( 'Transactions', 'ipf-payment' ),
+          'manage_options',
+          'ipf-transaction-view',
+          array( WP_Interswitch_Payment_Admin_Transaction_View::init(), 'setup' )
+        );
         
         $hook = add_submenu_page(
             'ipf-payment-form',
