@@ -2,7 +2,7 @@
     if ( ! defined( 'ABSPATH' ) ) { exit; }
     $product_id = $atts['product_id'];		
     $pay_item_id = $atts['pay_item_id'];
-    $txn_ref = "JB"  . intval( "0" . rand(1,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) ); // random(ish) 7 digit int. WEBPAY MAX - 50 characters
+    $txn_ref = $atts['txn_ref'];
     $mac    = $atts['mac'];
     $site_redirect_url = $atts['site_redirect_url'];
     $amount = $_POST["amount"] * 100;
@@ -31,3 +31,4 @@
     <a href="<?php echo $atts['site_redirect_url'] ?>">Back</a>
     <input type="submit" value="Make Payment"/>
 </form> 
+<div class="footnotes"> <?php echo $atts['footnotes']; ?></div>

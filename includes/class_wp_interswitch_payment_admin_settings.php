@@ -27,6 +27,7 @@
           'product_id' => $admin_settings->get_option_value( 'product_id' ),
           'pay_item_id' => $admin_settings->get_option_value( 'pay_item_id' ),
           'mode' => $admin_settings->get_option_value( 'mode' ),
+          'footnotes' => $admin_settings->get_option_value( 'footnotes' ),
           'mode_options' => $this->get_mode_options()
         );
         $this->render_admin_settings($attr);

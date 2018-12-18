@@ -66,6 +66,14 @@
                         <p class="description">Please provide your Pay Item ID</p>
                     </td>
                 </tr>
+                <tr>
+                <th scope="row">
+                    <label for="ipf_options[footnotes]"><?php _e( 'Footnotes', 'ipf-payment' ); ?></label>
+                </th>
+                <td>
+                    <textarea name="ipf_options[footnotes]" rows="5" cols="20" class="large-text code"><?php echo trim($attr['footnotes']); ?></textarea>
+                </td>
+                </tr>
             </tbody>
         </table>
         <?php submit_button(); ?>

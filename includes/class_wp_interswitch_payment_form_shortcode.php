@@ -15,29 +15,29 @@
                 $this->start_session();
             }
 
-            public function setup ( $attr )  {
+            public function setup ( $attr, $content = null )  {
                 global $admin_settings;
                 $this->start_session();
 
                 $atts = shortcode_atts( array(
-                    'amount'    => '',
-                    'payment_types' => '',
-                    'email'     => $this->get_current_user_email( $attr ),
+                    'amount'    => 0,
                     'btn_text' => 'MAKE PAYMENT',
-                    'currency'  => $admin_settings->get_option_value( 'currency' ),
+                    'currency'  => isset($attr['currency'])? $attr['currency'] : 'NGN',
                     'product_id'  => $admin_settings->get_option_value( 'product_id' ),
                     'pay_item_id'  => $admin_settings->get_option_value( 'pay_item_id' ),
                     'mac'  => $admin_settings->get_option_value( 'mac' ),
+                    'footnotes'  => $admin_settings->get_option_value( 'footnotes' ),
                     'payment_redirect_url' => $this->get_payment_url($admin_settings->get_option_value( 'mode' ))
                 ), $attr );
+                $atts = array_merge($atts, $_POST);
 
                 if(isset($_POST["confirm-payment"])) {
-                    // TODO: STORE FEW REQUIRED DATA IN SESSION
-                    // TODO: SAVE TRANSACTION TO DATABASE HERE ON SUBMIT
+                    $this->save_transaction( $atts );
                     return $this->render_confirmation_form( $atts );
                 }
                 
                 if(isset($_POST['txnref']) || isset($_GET['resp'])) {
+                    // Do not try to conform params
                     $transaction = array(
                         'productid' => $_SESSION['productid'],
                         'txnref' => isset($_POST['txnref']) ? $_POST['txnref'] : $_GET['txnRef'],
@@ -49,12 +49,17 @@
                     $status = $this->get_transaction_status($transaction);
                     $atts['code'] = $status->ResponseCode;
                     $atts['response'] = $status->ResponseDescription;
-                    $atts['txnref'] = $transaction['txnref'];
-                    $atts['payref'] = $transaction['payref'];
+                    $atts['txn_ref'] = $transaction['txnref'];
+                    $atts['pay_ref'] = $transaction['payref'];
+                    $this->update_transaction( $atts );
                     return $this->render_payment_status( $atts );
                 }
+                $atts['txn_ref'] = uniqid();
+                if(!isset($atts['email']) || empty($atts['email'])){
+                    $atts['email'] = $this->get_current_user_email( $attr );
+                }
                 $_SESSION['productid'] = $atts['product_id'];
-                return $this->render_payment_form( $atts );
+                return $this->render_payment_form( $atts, $content );
             }
 
             private function get_current_user_email( $attr ) {
@@ -73,13 +78,37 @@
                 return $modes[$mode];
             }
     
-            public function render_payment_form( $atts ) {
+            private function save_transaction($atts) {
+                $db = WP_Interswitch_Payment_Database::init();
+                $data['email'] = $atts['email'];
+                $data['pay_item_id'] = $atts['pay_item_id'];
+                $data['product_id'] = $atts['product_id'];
+                $data['currency'] = $atts['currency'];
+                $data['amount'] = $atts['amount'];
+                $data['txn_ref'] = $atts['txn_ref'];
+                $data['created_at'] = date("Y-m-d H:i:s");
+                if(isset($atts['meta']) && !empty($atts['meta'])){
+                    $data['meta'] = json_encode($atts['meta']);
+                }
+                $db->save_transaction( $data );
+            }
+    
+            private function update_transaction($atts) {
+                $db = WP_Interswitch_Payment_Database::init();
+                $data['pay_ref'] = $atts['pay_ref'];
+                $data['code'] = $atts['code'];
+                $data['response'] = $atts['response'];
+                $data['updated_at'] = date("Y-m-d H:i:s");
+                $db->update_transaction( $data, array('txn_ref' => $atts['txn_ref']));
+            }
+
+            public function render_payment_form( $atts, $content = null ) {
                 $data_attr = '';
                 foreach ($atts as $att_key => $att_value) {
                     $data_attr .= ' data-' . $att_key . '="' . $att_value . '"';
                 }
                 $atts['form_id'] = $this->gen_rand_string();
-                return $this->render_view( 'payment-form', $atts );
+                return $this->render_view( 'payment-form', $atts, $content );
             }
     
             public function render_confirmation_form( $atts ) {

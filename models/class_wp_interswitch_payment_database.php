@@ -8,35 +8,38 @@
   if ( ! class_exists( 'WP_Interswitch_Payment_Database' ) ) {
     
     class WP_Interswitch_Payment_Database {
+      private $table_name;
       public static function init() {
           $class = __CLASS__;
           return new $class;
       }
       
-      private function __construct() { }
+      private function __construct() {
+        global $wpdb;
+        $this->$table_name = $wpdb->prefix . IPF_TABLE_NAME;
+      }
       
       public function activate()  {
         global $wpdb;
-        $table_name = $wpdb->prefix . IPF_TABLE_NAME;
         $charset_collate = $wpdb->get_charset_collate();
-        $sql = "CREATE TABLE $table_name (
+        $sql = "CREATE TABLE ".$this->$table_name." (
           id int(11) NOT NULL AUTO_INCREMENT,
           email tinytext NOT NULL,
           pay_item_id tinyint(4) NOT NULL,
           product_id tinyint(4) NOT NULL,
-          amount decimal(12,4) NOT NULL,
+          currency varchar(4) NOT NULL,
+          amount decimal(12,2) NOT NULL,
           txn_ref varchar(50) NOT NULL,
-          payment_ref varchar(100) NULL,
-          card_number varchar(10) NULL,
-          retrieval_ref_num varchar(20) NULL,
+          pay_ref varchar(100) NULL,
+          card_number varchar(24) NULL,
           meta text NULL,
-          response_code varchar(4) NULL,
-          response_description varchar(255) NULL,
+          code varchar(4) NULL,
+          response varchar(255) NULL,
           created_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-          completed_at datetime DEFAULT '0000-00-00 00:00:00' NULL,
+          updated_at datetime DEFAULT '0000-00-00 00:00:00' NULL,
           status tinyint(1) DEFAULT '0' NOT NULL,
           UNIQUE KEY txn_ref (txn_ref),
-          UNIQUE KEY payment_ref (payment_ref),
+          UNIQUE KEY pay_ref (pay_ref),
           PRIMARY KEY  (id)
         ) $charset_collate;";
         $this->exec($sql);
@@ -47,10 +50,34 @@
         dbDelta($sql);
       }
 
+      public function get_transactions($orderby = 'created_at', $order = 'DESC', $offset = 0, $limit = 30) {
+        global $wpdb;
+        // $wpdb->show_errors();
+        return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$this->$table_name." ORDER BY $orderby $order LIMIT $offset, $limit", ARRAY_A));
+        // $wpdb->print_error();
+      }
+
+      public function count() {
+        global $wpdb;
+        return $wpdb->get_var("SELECT COUNT(*) FROM ".$this->$table_name);
+      }
+      
+      public function save_transaction($data) {
+        global $wpdb;
+        // $wpdb->show_errors();
+        $wpdb->insert($this->$table_name, $data);
+        // $wpdb->print_error();
+        // die(var_dump($wpdb->last_query));
+      }
+
+      public function update_transaction($data, $where) {
+        global $wpdb;
+        $wpdb->update($this->$table_name, $data, $where);
+      }
+
       public function deactivate() {
         global $wpdb;
-        $table_name = $wpdb->prefix . IPF_TABLE_NAME;
-        $sql = "DROP TABLE IF EXISTS $table_name";
+        $sql = "DROP TABLE IF EXISTS ".$this->$table_name;
         $wpdb->query($sql);
       }
     }

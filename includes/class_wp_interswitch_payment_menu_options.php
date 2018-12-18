@@ -31,31 +31,20 @@
           50
         );
         
-        // add_submenu_page(
-        //   'ipf-payment-form',
-        //   __( 'Settings', 'ipf-payment' ),
-        //   __( 'Settings', 'ipf-payment' ),
-        //   'manage_options',
-        //   'ipf-payment-form',
-        //   array( WP_Interswitch_Payment_Admin_Settings::init(), 'setup' )
-        // );
+    
         
         $hook = add_submenu_page(
-            'ipf-payments-form',
+            'ipf-payment-form',
             __( 'Transactions', 'ipf-payment' ),
             __( 'Transactions', 'ipf-payment' ),
             'manage_options',
             'ipf-transaction-list',
-            array( $this, 'plugin_transaction_page' )
+            array( WP_Interswitch_Payment_Admin_Transaction_List::init(), 'setup' )
           );
-        add_action( "load-$hook", array( $this, 'screen_option' ) );
-      }
-  
-      public function admin_configuration_page() {
-        return $this->render_view( 'admin-settings' );
+        add_action( "load-$hook", array( $this, 'set_screen' ) );
       }
 
-      public function set_screen( $status, $option, $value ) {
+      public function set_screen( $status, $option=null, $value=null ) {
         return $value;
       }
     }
