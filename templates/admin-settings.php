@@ -10,7 +10,7 @@
         </div>
     <?php } ?>
     <hr class="wp-header-end">
-    <form id="interswitch-payment-form" action="options.php" method="post" enctype="multipart/form-data" class="validate" novalidate="novalidate">
+    <form id="interswitch-payment-form" action="options.php" method="POST" enctype="multipart/form-data" class="validate" novalidate="novalidate">
         <?php settings_fields( 'ipf_options_group' ); ?>
         <?php do_settings_sections( 'ipf_options_group' ); ?>
         <h2>Settings</h2>

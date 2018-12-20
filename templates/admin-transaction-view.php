@@ -4,7 +4,7 @@
 
 <div class="wrap">
   <h1 class="wp-heading-inline">Interswitch Transaction</h1>
-  <form method="get">
+  <form method="GET">
     <h2>Ref: <?php echo $attr->txn_ref; ?></h2>
   <hr/>
     <table class="form-table">

@@ -16,6 +16,9 @@
                 if ( !class_exists( 'WP_Interswitch_Payment_Admin_Transaction_View' ) ){
                     require_once ( IPF_DIR_PATH . 'includes/class_wp_interswitch_payment_admin_transaction_view.php');
                 }
+                if ( !class_exists( 'WP_Interswitch_Payment_Admin_Transaction_Requery' ) ){
+                    require_once ( IPF_DIR_PATH . 'includes/class_wp_interswitch_payment_admin_transaction_requery.php');
+                }
                 // Setup Admin Menu
                 if ( !class_exists( 'WP_Interswitch_Payment_Menu_Options' ) ){
                     require_once ( IPF_DIR_PATH . 'includes/class_wp_interswitch_payment_menu_options.php' );

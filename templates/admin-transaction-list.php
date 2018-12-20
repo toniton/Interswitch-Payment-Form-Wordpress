@@ -7,7 +7,7 @@
   <?php if(isset($_GET['s']) && !empty($_GET['s'])){ ?>
       <span class="subtitle">Search results for “<?php echo$_GET['s'] ?>”</span>
   <?php } ?>
-  <form method="get">
+  <form method="GET">
     <h2>All Transactions</h2>
     <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
     <?php

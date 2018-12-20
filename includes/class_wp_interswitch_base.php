@@ -18,6 +18,24 @@
                 include ( IPF_DIR_PATH . 'templates/' . $file .'.php');
             }
 
+            protected function get_payment_url( $mode ) {
+                $modes = array(
+                    'test' => IPF_TEST_URL,
+                    'live' => IPF_LIVE_URL,
+                    'sandbox' => IPF_SANDBOX_URL
+                );
+                return $modes[$mode];
+            }
+
+            protected function get_currency_code( $currency ) {
+                $codes = array(
+                    'NGN' => '566',
+                    'USD' => '840',
+                    'GBP' => '826'
+                );
+                return $codes[strtoupper($currency)];
+            }
+
             protected function start_session() {
                 if (!session_id()) {
                     session_start();

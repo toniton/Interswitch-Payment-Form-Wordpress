@@ -32,14 +32,17 @@
                 $atts = array_merge($atts, $_POST);
 
                 if(isset($_POST["confirm-payment"])) {
+                    $_SESSION['amount'] = $atts['amount'];
+                    var_dump($atts);
                     $this->save_transaction( $atts );
+                    $atts['currency'] = $this->get_currency_code($atts['currency']);
                     return $this->render_confirmation_form( $atts );
                 }
                 
                 if(isset($_POST['txnref']) || isset($_GET['resp'])) {
                     // Do not try to conform params
                     $transaction = array(
-                        'productid' => $_SESSION['productid'],
+                        'productid' => $_SESSION['product_id'],
                         'txnref' => isset($_POST['txnref']) ? $_POST['txnref'] : $_GET['txnRef'],
                         'payref' => isset($_POST['payRef']) ? $_POST['payRef'] : $_GET['payRef'],
                         'amount' => $_SESSION['amount'],
@@ -58,7 +61,7 @@
                 if(!isset($atts['email']) || empty($atts['email'])){
                     $atts['email'] = $this->get_current_user_email( $attr );
                 }
-                $_SESSION['productid'] = $atts['product_id'];
+                $_SESSION['product_id'] = $atts['product_id'];
                 return $this->render_payment_form( $atts, $content );
             }
 
@@ -67,15 +70,6 @@
                     return wp_get_current_user()->user_email;
                 }
                 return '';
-            }
-
-            private function get_payment_url( $mode ) {
-                $modes = array(
-                    'test' => IPF_TEST_URL,
-                    'live' => IPF_LIVE_URL,
-                    'sandbox' => IPF_SANDBOX_URL
-                );
-                return $modes[$mode];
             }
     
             private function save_transaction($atts) {

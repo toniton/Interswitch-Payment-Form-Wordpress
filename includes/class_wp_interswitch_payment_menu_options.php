@@ -48,6 +48,15 @@
             'ipf-transaction-list',
             array( WP_Interswitch_Payment_Admin_Transaction_List::init(), 'setup' )
           );
+        
+        add_submenu_page(
+              'ipf-payment-form',
+              __( 'Re-Query', 'ipf-payment' ),
+              __( 'Re-Query', 'ipf-payment' ),
+              'manage_options',
+              'ipf-transaction-requery',
+              array( WP_Interswitch_Payment_Admin_Transaction_Requery::init(), 'setup' )
+        );
         add_action( "load-$hook", array( $this, 'set_screen' ) );
       }
 
