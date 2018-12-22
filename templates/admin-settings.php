@@ -10,6 +10,10 @@
         </div>
     <?php } ?>
     <hr class="wp-header-end">
+    <h2 class="nav-tab-wrapper wp-clearfix">
+		<a href="http://localhost:8085/wp-admin/nav-menus.php" class="nav-tab nav-tab-active">Settings</a>
+		<a href="http://localhost:8085/wp-admin/nav-menus.php" class="nav-tab">Edit CSS Styles</a>
+	</h2>
     <form id="interswitch-payment-form" action="options.php" method="POST" enctype="multipart/form-data" class="validate" novalidate="novalidate">
         <?php settings_fields( 'ipf_options_group' ); ?>
         <?php do_settings_sections( 'ipf_options_group' ); ?>

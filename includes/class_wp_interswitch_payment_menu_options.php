@@ -22,13 +22,22 @@
 
       public function setup_menu() {
         add_menu_page(
-          __( 'Interswitch Settings Page', 'ptr-payments' ),
+          __( 'Interswitch Settings Page', 'ipf-payment' ),
           'Interswitch',
           'manage_options',
           'ipf-payment-form',
-          array( WP_Interswitch_Payment_Admin_Settings::init(), 'setup' ),
+          null,
           IPF_DIR_URL . 'assets/interswitch-icon-small.png',
           50
+        );
+        
+        add_submenu_page(
+          'ipf-payment-form',
+          __( 'Interswitch Settings Page', 'ipf-payment' ),
+          'Settings',
+          'manage_options',
+          'ipf-payment-form',
+          array( WP_Interswitch_Payment_Admin_Settings::init(), 'setup' )
         );
         
         add_submenu_page(
