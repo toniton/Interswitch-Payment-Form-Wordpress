@@ -1,0 +1,10 @@
+#pay{
+  background: red;
+	border: 1px solid green;
+}
+
+.button {
+	width: 300px;
+	height: 14px;
+	text-align: center;
+}

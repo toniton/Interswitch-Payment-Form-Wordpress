@@ -33,7 +33,6 @@
 
                 if(isset($_POST["confirm-payment"])) {
                     $_SESSION['amount'] = $atts['amount'];
-                    var_dump($atts);
                     $this->save_transaction( $atts );
                     $atts['currency'] = $this->get_currency_code($atts['currency']);
                     return $this->render_confirmation_form( $atts );
@@ -45,7 +44,7 @@
                         'productid' => $_SESSION['product_id'],
                         'txnref' => isset($_POST['txnref']) ? $_POST['txnref'] : $_GET['txnRef'],
                         'payref' => isset($_POST['payRef']) ? $_POST['payRef'] : $_GET['payRef'],
-                        'amount' => $_SESSION['amount'],
+                        'amount' => $_SESSION['amount'] * 100,
                         'mac'  => $admin_settings->get_option_value( 'mac' ),
                         'payment_redirect_url' => $this->get_payment_url($admin_settings->get_option_value( 'mode' ))
                     );

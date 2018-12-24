@@ -11,8 +11,9 @@
     <?php } ?>
     <hr class="wp-header-end">
     <h2 class="nav-tab-wrapper wp-clearfix">
-		<a href="http://localhost:8085/wp-admin/nav-menus.php" class="nav-tab nav-tab-active">Settings</a>
-		<a href="http://localhost:8085/wp-admin/nav-menus.php" class="nav-tab">Edit CSS Styles</a>
+        <?php foreach($attr['tabs'] as $key => $tab) {?>
+		    <a href="?page=<?php echo $_REQUEST['page'] ?>&tab=<?php echo $key; ?>" class="nav-tab <?php if ($key === $attr['currentTab']) echo 'nav-tab-active'; ?> "><?php echo $tab; ?></a>
+        <?php } ?>
 	</h2>
     <form id="interswitch-payment-form" action="options.php" method="POST" enctype="multipart/form-data" class="validate" novalidate="novalidate">
         <?php settings_fields( 'ipf_options_group' ); ?>
