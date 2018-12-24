@@ -21,6 +21,7 @@
 
                 $atts = shortcode_atts( array(
                     'amount'    => 0,
+                    'css' => file_get_contents(IPF_DIR_PATH . 'assets/css/style.css'),
                     'btn_text' => 'MAKE PAYMENT',
                     'currency'  => isset($attr['currency'])? $attr['currency'] : 'NGN',
                     'product_id'  => $admin_settings->get_option_value( 'product_id' ),

@@ -10,6 +10,11 @@
     $hashv  = $txn_ref . $product_id . "101" . $amount . $site_redirect_url . $mac;
     $hash  = hash('sha512',$hashv);
 ?>
+<?php if ( isset( $atts['css'] ) && '' !== $atts['css'] ) { ?>
+    <style>
+        <?php echo wp_unslash( $atts['css'] ) ?>
+    </style>
+<?php } ?>
 
 <form method="POST" action="<?php echo $atts['payment_redirect_url'] ?>">
     <!-- REQUIRED HIDDEN FIELDS -->

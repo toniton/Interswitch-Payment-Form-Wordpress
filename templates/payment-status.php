@@ -1,6 +1,11 @@
 <?php
     if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
+<?php if ( isset( $atts['css'] ) && '' !== $atts['css'] ) { ?>
+    <style>
+        <?php echo wp_unslash( $atts['css'] ) ?>
+    </style>
+<?php } ?>
 <div>
     <h3>Transaction Status</h3>
     <p><small> Reference : <b><?php echo $atts['txn_ref'] ?></b></small></p>

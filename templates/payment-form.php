@@ -1,6 +1,11 @@
 <?php
     if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
+<?php if ( isset( $atts['css'] ) && '' !== $atts['css'] ) { ?>
+    <style>
+        <?php echo wp_unslash( $atts['css'] ) ?>
+    </style>
+<?php } ?>
 <form method="POST" action="">
     <?php echo do_shortcode($content); ?>
     <div>
